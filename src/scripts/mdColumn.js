@@ -46,7 +46,7 @@ function mdColumn($compile, $mdUtil) {
     }
 
     function isActive() {
-      return scope.orderBy && (headCtrl.order === scope.orderBy || headCtrl.order === '-' + scope.orderBy);
+      return scope.orderBy && (headCtrl.order === scope.orderBy || headCtrl.order === scope.orderBy + " DESC");
     }
 
     function isNumeric() {
@@ -56,9 +56,9 @@ function mdColumn($compile, $mdUtil) {
     function setOrder() {
       scope.$applyAsync(function () {
         if(isActive()) {
-          headCtrl.order = scope.getDirection() === 'md-asc' ? '-' + scope.orderBy : scope.orderBy;
+          headCtrl.order = scope.getDirection() === 'md-asc' ? scope.orderBy + " DESC" : scope.orderBy;
         } else {
-          headCtrl.order = scope.getDirection() === 'md-asc' ? scope.orderBy : '-' + scope.orderBy;
+          headCtrl.order = scope.getDirection() === 'md-asc' ? scope.orderBy : scope.orderBy + " DESC";
         }
 
         if(angular.isFunction(headCtrl.onReorder)) {
@@ -81,7 +81,7 @@ function mdColumn($compile, $mdUtil) {
 
     scope.getDirection = function () {
       if(isActive()) {
-        return headCtrl.order.charAt(0) === '-' ? 'md-desc' : 'md-asc';
+        return headCtrl.order.match(/DESC/) ? 'md-desc' : 'md-asc';
       }
 
       return attrs.mdDesc === '' || scope.$eval(attrs.mdDesc) ? 'md-desc' : 'md-asc';
